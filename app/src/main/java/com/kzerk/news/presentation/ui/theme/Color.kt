@@ -1,4 +1,4 @@
-package com.kzerk.news.ui.theme
+package com.kzerk.news.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
