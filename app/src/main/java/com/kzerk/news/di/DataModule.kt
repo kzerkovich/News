@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import com.kzerk.news.data.local.NewsDatabase
 import com.kzerk.news.data.remote.NewsApiService
+import com.kzerk.news.data.repository.NewsRepositoryImpl
+import com.kzerk.news.domain.repository.NewsRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +23,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 interface DataModule {
+
+    @Singleton
+    @Binds
+    fun bindNewsRepository(
+        impl: NewsRepositoryImpl
+    ): NewsRepository
 
     companion object {
 
