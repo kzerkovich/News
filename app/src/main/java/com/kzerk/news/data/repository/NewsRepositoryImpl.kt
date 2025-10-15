@@ -1,6 +1,10 @@
 package com.kzerk.news.data.repository
 
 import android.util.Log
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import com.kzerk.news.data.background.RefreshDataWorker
 import com.kzerk.news.data.local.ArticleDbModel
 import com.kzerk.news.data.local.NewsDao
 import com.kzerk.news.data.local.SubscriptionDbModel
@@ -16,10 +20,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 class NewsRepositoryImpl @Inject constructor(
     private val newsDao: NewsDao,
-    private val newsApiService: NewsApiService
+    private val newsApiService: NewsApiService,
+    private val workManager: WorkManager
 ) : NewsRepository {
     override fun getAllSubscriptions(): Flow<List<String>> {
         return newsDao.getAllSubscriptions().map { subscriptions ->
@@ -61,6 +67,19 @@ class NewsRepositoryImpl @Inject constructor(
 
     override suspend fun clearAllArticles(topics: List<String>) {
         newsDao.deleteArticlesByTopics(topics)
+    }
+
+    private fun startBackgroundRefresh() {
+        val request = PeriodicWorkRequestBuilder<RefreshDataWorker>(
+            repeatInterval = 15L,
+            repeatIntervalTimeUnit = TimeUnit.MINUTES
+        ).build()
+
+        workManager.enqueueUniquePeriodicWork(
+            uniqueWorkName = "Refresh data",
+            existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+            request = request
+        )
     }
 
     private suspend fun loadArticles(topic: String): List<ArticleDbModel> {
