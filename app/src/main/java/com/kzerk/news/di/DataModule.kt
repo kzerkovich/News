@@ -6,7 +6,9 @@ import androidx.work.WorkManager
 import com.kzerk.news.data.local.NewsDatabase
 import com.kzerk.news.data.remote.NewsApiService
 import com.kzerk.news.data.repository.NewsRepositoryImpl
+import com.kzerk.news.data.repository.SettingsRepositoryImpl
 import com.kzerk.news.domain.repository.NewsRepository
+import com.kzerk.news.domain.repository.SettingsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -30,6 +32,12 @@ interface DataModule {
     fun bindNewsRepository(
         impl: NewsRepositoryImpl
     ): NewsRepository
+
+    @Singleton
+    @Binds
+    fun bindSettingsRepository(
+        impl: SettingsRepositoryImpl
+    ): SettingsRepository
 
     companion object {
 

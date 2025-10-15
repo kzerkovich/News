@@ -3,6 +3,7 @@ package com.kzerk.news.data.mapper
 import com.kzerk.news.data.local.ArticleDbModel
 import com.kzerk.news.data.remote.NewsResponseDto
 import com.kzerk.news.domain.entity.Article
+import com.kzerk.news.domain.entity.Interval
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -31,6 +32,10 @@ fun List<ArticleDbModel>.toEntities(): List<Article> {
             url = it.url
         )
     }.distinct()
+}
+
+fun Int.toInterval(): Interval {
+    return Interval.entries.first { it.minutes == this }
 }
 
 private fun String.toTimeStamp(): Long {

@@ -16,4 +16,6 @@
     <string name="share_article">share article</string>
     <string name="share">Share</string>
     <string name="no_articles_for_selected_subscriptions">No articles for selected subscriptions</string>
+    <string name="new_articles">New Articles</string>
+    <string name="updated_subscriptions">Updated %1$d subscriptions: %2$s</string>
 </resources>
