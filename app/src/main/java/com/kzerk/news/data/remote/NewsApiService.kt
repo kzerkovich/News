@@ -1,11 +1,13 @@
 package com.kzerk.news.data.remote
 
+import com.kzerk.news.BuildConfig
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface NewsApiService {
-    @GET("v2/everything?apiKey=fadc77920bb04059a994d810a1755cf8")
+    @GET("v2/everything?apiKey=${BuildConfig.NEWS_API_KEY}")
     suspend fun loadArticles(
-        @Query("q") topic: String
+        @Query("q") topic: String,
+        @Query("language") language: String
     ): NewsResponseDto
 }

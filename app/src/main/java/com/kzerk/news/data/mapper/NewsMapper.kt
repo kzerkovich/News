@@ -4,6 +4,7 @@ import com.kzerk.news.data.local.ArticleDbModel
 import com.kzerk.news.data.remote.NewsResponseDto
 import com.kzerk.news.domain.entity.Article
 import com.kzerk.news.domain.entity.Interval
+import com.kzerk.news.domain.entity.Language
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -36,6 +37,15 @@ fun List<ArticleDbModel>.toEntities(): List<Article> {
 
 fun Int.toInterval(): Interval {
     return Interval.entries.first { it.minutes == this }
+}
+
+fun Language.toQueryParam(): String {
+    return when (this) {
+        Language.ENGLISH -> "en"
+        Language.FRENCH -> "fr"
+        Language.RUSSIAN -> "ru"
+        Language.GERMAN -> "de"
+    }
 }
 
 private fun String.toTimeStamp(): Long {
